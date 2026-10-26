@@ -1,0 +1,265 @@
+# Project: Professional Locksmith, Automotive Key & Emergency Locksmith Website
+
+Act as a senior UI/UX designer, full-stack web developer, and local SEO specialist. Build a modern, trustworthy, fast, and conversion-focused website for a professional locksmith business operating in Turkey, specializing in automotive keys, residential locksmith services, and emergency lockout assistance.
+
+## 1. Business Overview and Services
+
+Business type: Locksmith, automotive locksmith, and key duplication service.
+
+Services offered:
+- Residential, apartment, and commercial door unlocking
+- Emergency locksmith services
+- Lock and cylinder replacement
+- Door lock repair and installation
+- Steel door key and lock services
+- Car key duplication
+- Remote key programming
+- Immobilizer key services
+- Lost car key replacement solutions
+- Remote and smart key services
+- Safe and cabinet lock services
+
+The business name, phone number, address, opening hours, and service areas must be easy to configure. Never invent business information or present placeholder data as real. Use editable sample values for information that has not yet been provided.
+
+## 2. Design Direction
+
+Do not create a generic small-business website. Design a premium, modern website that feels like a professional service brand.
+
+Visual identity:
+- Primary colors: dark navy (#101828), trustworthy blue (#2563EB), and white (#FFFFFF).
+- Use orange (#F97316) selectively for emergency service highlights and phone call actions.
+- Use a modern sans-serif typeface.
+- Create strong headlines, generous whitespace, balanced cards, and a clear visual hierarchy.
+- Use high-quality, realistic imagery related to keys, car keys, locks, and professional locksmith services.
+- Use a consistent icon library.
+- Avoid unnecessary animations, excessive rounded cards, and generic template aesthetics.
+- The website must look excellent on both desktop and mobile devices.
+
+## 3. Homepage
+
+### Header
+
+Create a slim announcement bar at the top featuring:
+- “Emergency Locksmith Assistance”
+- “Quick Contact”
+- “Service Area: [CITY / DISTRICT]”
+
+Main navigation:
+- Logo with a key icon and business name
+- Home
+- Our Services
+- Automotive Locksmith
+- Residential & Commercial Locksmith
+- About Us
+- Contact
+
+Place a prominent “Call Now” button on the right.
+
+On mobile devices, display a sticky bottom contact bar with:
+- Call Now
+- WhatsApp
+- Get Directions
+
+### Hero Section
+
+The first screen must immediately communicate trust and encourage visitors to contact the business.
+
+Example content:
+
+Eyebrow text:
+“AUTOMOTIVE KEYS • LOCKSMITH • LOCK SYSTEMS”
+
+Main headline:
+“Locked Out? Lost Your Keys?”
+
+Supporting text:
+“Professional locksmith services for homes, businesses, and vehicles. Tell us what you need, and contact us for suitable solutions and pricing information.”
+
+Buttons:
+- “Call Now”
+- “Contact Us on WhatsApp”
+
+Buttons must use functional phone links (`tel:`) and WhatsApp links (`wa.me`). Phone numbers must come from the business configuration.
+
+Use a professional locksmith or automotive key image in the hero section. The text and image should complement each other. Create a two-column layout on desktop and a vertically stacked layout on mobile.
+
+Do not use fake customer reviews, unverified ratings, fabricated certifications, or unsubstantiated promises such as “We will arrive in 5 minutes.”
+
+### Trust Indicators
+
+Below the hero section, display four concise service highlights:
+- Residential and commercial lock solutions
+- Automotive keys and remote controls
+- Professional equipment
+- Clear communication and pricing
+
+Only display services and claims that the business genuinely offers and can verify.
+
+### Service Cards
+
+Create modern cards for each service, featuring a unique icon, title, short description, and a “Learn More” link.
+
+1. Emergency Locksmith
+2. Residential and Apartment Door Unlocking
+3. Steel Door Lock Services
+4. Lock and Cylinder Replacement
+5. Automotive Locksmith
+6. Lost Car Key Replacement
+7. Remote Key Services
+8. Immobilizer and Key Programming
+
+Each card must link to the relevant service page.
+
+### Why Choose Us?
+
+Create a section with four key benefits:
+- Solutions tailored to your needs
+- Transparent pricing
+- Easy communication
+- Specialized services for residential and automotive keys
+
+Avoid unverified superiority claims. All content should be editable by the business owner.
+
+### Automotive Locksmith Section
+
+Create a dedicated, visually distinctive section for automotive key services.
+
+Headline:
+“Automotive Key and Remote Solutions”
+
+Description:
+“Explore our services for car key duplication, remote key issues, immobilizer systems, and lost car keys.”
+
+CTA:
+“Explore Automotive Locksmith Services”
+
+Use high-quality imagery featuring car keys, remote controls, and modern automotive details.
+
+### Residential and Commercial Locksmith Section
+
+Headline:
+“Professional Solutions for Door and Lock Problems”
+
+Describe door unlocking, lock mechanism repair, cylinder replacement, and lock installation services.
+
+Use a relevant door or lock image alongside a clear call-to-action button.
+
+### How It Works
+
+Create a simple three-step process:
+
+1. Call us or contact us via WhatsApp.
+2. Explain your issue and share your location.
+3. Receive information about the appropriate service, estimated cost, and estimated arrival time where available.
+
+Never present prices or arrival times as guaranteed unless the business has verified and confirmed them.
+
+### Frequently Asked Questions
+
+Use accessible accordion components.
+
+Include these questions:
+- How can I contact a locksmith?
+- Do you offer car key duplication?
+- What should I do if I lose my car keys?
+- Do you replace door locks and cylinders?
+- How are service fees determined?
+- Which areas do you serve?
+- Do you offer emergency locksmith services at night?
+
+Answers must be editable and based on actual business information.
+
+### Contact Section
+
+Display:
+- Phone number
+- WhatsApp contact link
+- Business address
+- Cities and districts served
+- Opening hours
+- Google Maps link or verified location map
+- Short contact form
+
+Contact form fields:
+- Full Name
+- Phone Number
+- Service Type
+- Message
+
+Implement client-side form validation, accessible error messages, and a success state. If no real backend or email integration has been configured, do not claim that the form has actually been submitted.
+
+### Footer
+
+Create a clean footer containing the logo, a short business description, service links, phone number, WhatsApp link, address, opening hours, and copyright information.
+
+## 4. Additional Pages
+
+Create separate pages with their own URLs:
+
+- `/`
+- `/services`
+- `/automotive-locksmith`
+- `/locksmith`
+- `/lock-replacement`
+- `/contact`
+- `/privacy-policy`
+
+Each page must have a unique title, description, relevant services, and contact CTA. Do not simply duplicate the same content across every page.
+
+## 5. Technical Requirements
+
+- Prefer React, TypeScript, and Tailwind CSS.
+- Build a project that runs reliably in the Replit environment.
+- Use reusable components and a maintainable project structure.
+- Implement a mobile-first responsive design.
+- Ensure navigation, accordions, phone buttons, WhatsApp buttons, and forms work correctly.
+- Use accessible labels and appropriate validation messages for form fields.
+- Ensure all internal page links work.
+- Provide suitable fallbacks if images fail to load.
+- Avoid unnecessary large dependencies.
+- Use semantic, SEO-friendly HTML.
+- Write meaningful alt text for images.
+- Ensure sufficient color contrast and keyboard accessibility.
+- Prioritize loading speed and Core Web Vitals performance.
+
+## 6. Local SEO
+
+Prepare a local SEO foundation that can be configured once the business's actual location is provided.
+
+Requirements:
+- Unique title and meta description for every page.
+- Canonical URL support.
+- Open Graph metadata.
+- `sitemap.xml` and `robots.txt`.
+- Breadcrumb navigation.
+- Structured business data using LocalBusiness and the Locksmith subtype only where appropriate and supported.
+- Configurable phone number, address, and opening hours.
+- Logical internal linking between related services.
+- Natural English and Turkish SEO content where appropriate for the target audience.
+- Never invent city or district keywords before the actual service location is known.
+- Never create fake addresses, fake reviews, fake business profiles, or misleading SEO content.
+
+## 7. Content and Language
+
+The primary website language must be natural, professional Turkish. Do not leave English placeholder text in the Turkish interface.
+
+Keep the copy concise, trustworthy, and focused on helping visitors contact the business. Avoid overwhelming visitors with unnecessary text.
+
+Structure the application so that an English version can be added later if needed.
+
+## 8. Final Quality Assurance
+
+Do not leave the project as a mockup or static screenshot. Build a working web application.
+
+Before finishing:
+- Run the application and fix any build errors.
+- Check desktop and mobile layouts.
+- Test all page links.
+- Verify phone and WhatsApp links.
+- Put missing business information in a single configuration file.
+- Do not leave broken forms, empty links, or fake data.
+- Deliver the project in a state that can be run and deployed through Replit.
+
+Priority order: Trustworthy design, mobile usability, easy phone contact, clear presentation of automotive locksmith and residential locksmith services, local SEO, and fast loading.
+
+The final result should look like a polished, professionally designed business website rather than a generic AI-generated template.
