@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Anahtar & Kilit Hizmetleri"
+description = "A polished, mobile-first Turkish locksmith website for automotive key services, residential and commercial locks, emergency assistance, and configurable business contact details."
+version = "1.0.0"
+id = "artifacts/kilit-anahtari"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19963
+
+[services.development]
+run = "pnpm --filter @workspace/kilit-anahtari run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/kilit-anahtari", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/kilit-anahtari/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19963"
+BASE_PATH = "/"

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!--
+    Arama motorlarına göndermeden önce işletme yapılandırmasındaki
+    canonicalBaseUrl değerini doğrulanmış alan adıyla ayarlayın ve
+    aşağıdaki yolları o alan adına ait tam URL'ler olarak üretin:
+    /, /services, /automotive-locksmith, /locksmith,
+    /lock-replacement, /contact, /privacy-policy
+    Alan adı yapılandırılmadığı için sahte bir URL eklenmemiştir.
+  -->
+</urlset>
