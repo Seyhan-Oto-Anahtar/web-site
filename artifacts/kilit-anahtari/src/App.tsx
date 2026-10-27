@@ -14,14 +14,15 @@ import { businessConfig } from './business-config';
 
 const queryClient = new QueryClient();
 
-type PageKey = 'home' | 'services' | 'automotive' | 'locksmith' | 'replacement' | 'contact' | 'privacy';
+type PageKey = 'home' | 'services' | 'automotive' | 'locksmith' | 'replacement' | 'about' | 'contact' | 'privacy';
 const pageMeta: Record<PageKey, { title: string; description: string; heading: string; eyebrow: string }> = {
-  home: { title: 'Çilingir ve Oto Anahtar Hizmetleri | Anahtar & Kilit', description: 'Konut, iş yeri ve araç anahtarı sorunlarınız için çilingir ve oto anahtar hizmetlerini inceleyin. İhtiyacınıza uygun bilgi ve iletişim seçenekleri.', heading: 'Anahtarınız mı kayıp, kapıda mı kaldınız?', eyebrow: 'ÇİLİNGİR · OTO ANAHTAR · KİLİT SİSTEMLERİ' },
+  home: { title: 'Oto Anahtar ve Çilingir | Seyhan Anahtar', description: 'Seyhan Anahtar; araç anahtarı yapımı, yedek anahtar, immobilizer ve çilingir hizmetleri için Adana Seyhan’da hizmet sunar.', heading: 'Anahtarınız mı kayıp, kapıda mı kaldınız?', eyebrow: 'ÇİLİNGİR · OTO ANAHTAR · KİLİT SİSTEMLERİ' },
   services: { title: 'Çilingir ve Anahtarcı Hizmetleri | Hizmetler', description: 'Kapı açma, kilit ve barel değişimi, araç anahtarı, kumanda ve immobilizer hizmetlerini tek yerde keşfedin.', heading: 'İhtiyacınıza uygun hizmeti bulun', eyebrow: 'HİZMETLER' },
   automotive: { title: 'Oto Çilingir ve Araç Anahtarı Hizmetleri', description: 'Araç anahtarı çoğaltma, kumanda, immobilizer ve kayıp anahtar çözümleri hakkında bilgi alın ve iletişim kurun.', heading: 'Araç anahtarında doğru çözüm, net bilgiyle başlar', eyebrow: 'OTO ÇİLİNGİR' },
   locksmith: { title: 'Konut ve İş Yeri Çilingir Hizmetleri', description: 'Konut, apartman ve iş yeri kapıları için açma, kilit onarımı ve montaj hizmetlerini inceleyin.', heading: 'Kapı ve kilit sorunları için profesyonel destek', eyebrow: 'KONUT · İŞ YERİ' },
-  replacement: { title: 'Kilit ve Barel Değişimi | Anahtar & Kilit', description: 'Kapı kilidi ve barel değişimi, arıza kontrolü ve yeni kilit montajı hakkında bilgi alın.', heading: 'Kilit değişimi, ihtiyaca göre planlanır', eyebrow: 'KİLİT SİSTEMLERİ' },
-  contact: { title: 'İletişim ve Hizmet Talebi | Anahtar & Kilit', description: 'Hizmet ihtiyacınızı kısaca aktarın. Gerçek iletişim bilgileri yapılandırıldığında telefon ve WhatsApp seçenekleri burada görünür.', heading: 'Sorununuzu anlatın, birlikte netleştirelim', eyebrow: 'İLETİŞİM' },
+  replacement: { title: 'Kilit ve Barel Değişimi | Seyhan Anahtar', description: 'Kapı kilidi ve barel değişimi, arıza kontrolü ve yeni kilit montajı hakkında bilgi alın.', heading: 'Kilit değişimi, ihtiyaca göre planlanır', eyebrow: 'KİLİT SİSTEMLERİ' },
+  about: { title: 'Tarihçemiz | Seyhan Anahtar', description: 'Seyhan Anahtar’ın otomotiv anahtarcılığı, yerinde hizmet ve müşteri memnuniyeti odaklı çalışma anlayışını tanıyın.', heading: 'Seyhan Anahtar’ın tarihçesi', eyebrow: 'HAKKIMIZDA' },
+  contact: { title: 'İletişim | Seyhan Anahtar', description: 'Seyhan Anahtar’a telefon veya WhatsApp ile ulaşın. Adres: İbo Osman Caddesi, Seyhan, Adana.', heading: 'Sorununuzu anlatın, birlikte netleştirelim', eyebrow: 'İLETİŞİM' },
   privacy: { title: 'Gizlilik ve Kişisel Verilerin Korunması', description: 'Bu web sitesinde iletişim formu verilerinin nasıl işlendiği ve iletişim seçenekleri hakkında gizlilik bilgilendirmesi.', heading: 'Gizlilik bildirimi', eyebrow: 'GİZLİLİK' },
 };
 
@@ -31,17 +32,24 @@ const navItems: { href: string; label: string }[] = [
   { href: '/automotive-locksmith', label: 'Oto çilingir' },
   { href: '/locksmith', label: 'Konut ve iş yeri' },
   { href: '/lock-replacement', label: 'Kilit değişimi' },
+  { href: '/about', label: 'Hakkımızda' },
   { href: '/contact', label: 'İletişim' },
-  { href: '/privacy-policy', label: 'Gizlilik' },
 ];
 
 type ContactKind = 'phone' | 'whatsapp' | 'directions';
 
-function contactTarget(value: string, kind: ContactKind) {
+function contactTarget(value: string, kind: ContactKind, message?: string) {
   const cleaned = value.replace(/[^\d+]/g, '');
   if (!cleaned) return undefined;
   if (kind === 'phone') return `tel:${cleaned}`;
-  if (kind === 'whatsapp') return `https://wa.me/${cleaned.replace(/\D/g, '')}`;
+  if (kind === 'whatsapp') {
+    let digits = cleaned.replace(/\D/g, '');
+    if (digits.startsWith('00')) digits = digits.slice(2);
+    if (digits.startsWith('0')) digits = `90${digits.slice(1)}`;
+    else if (!digits.startsWith('90')) digits = `90${digits}`;
+    const target = `https://wa.me/${digits}`;
+    return message ? `${target}?text=${encodeURIComponent(message)}` : target;
+  }
   try {
     const url = new URL(value);
     return url.protocol === 'https:' || url.protocol === 'http:' ? url.toString() : undefined;
@@ -65,14 +73,14 @@ function ContactLink({ kind, compact = false }: { kind: ContactKind; compact?: b
 }
 
 function Brand() {
-  return <Link href="/" className="brand" aria-label="Anahtar ve Kilit ana sayfa" data-testid="link-brand"><span className="brand-mark"><KeyRound size={21} strokeWidth={2.1} /></span><span className="brand-name">anahtar<span>&</span>kilit<small>ÇİLİNGİR · OTO ANAHTAR</small></span></Link>;
+  return <Link href="/" className="brand" aria-label={`${businessConfig.name} ana sayfa`} data-testid="link-brand"><span className="brand-mark"><KeyRound size={21} strokeWidth={2.1} /></span><span className="brand-name">{businessConfig.name}<small>ÇİLİNGİR · OTO ANAHTAR</small></span></Link>;
 }
 
 function Header() {
   const [path] = useLocation();
   const [open, setOpen] = useState(false);
   return <>
-    <div className="topline"><div className="container-wide top-line-inner"><span><span className="top-dot" />Çilingir ve oto anahtar hizmetleri</span><span className="top-note">Bilgi alın, seçeneklerinizi değerlendirin</span><Link href="/contact" className="top-contact">İletişime geçin <ArrowRight size={13} /></Link></div></div>
+    <div className="topline"><div className="container-wide top-line-inner"><span><span className="top-dot" />Seyhan Anahtar · Seyhan / Adana</span><span className="top-note">Bilgi alın, seçeneklerinizi değerlendirin</span><Link href="/contact" className="top-contact">İletişime geçin <ArrowRight size={13} /></Link></div></div>
     <header className="site-header"><div className="container-wide nav-inner">
       <Brand />
       <nav className={`main-nav ${open ? 'nav-open' : ''}`} aria-label="Ana gezinme">
@@ -120,12 +128,12 @@ function ServiceCards({ limit }: { limit?: number }) {
 }
 
 const faqItems = [
-  ['Bir çilingire nasıl ulaşabilirim?', 'Telefon veya WhatsApp bilgileri işletme yapılandırmasına eklendiğinde doğrudan iletişim seçenekleri açılır. Bu bilgiler henüz girilmemişse iletişim sayfasındaki formu kullanarak ihtiyacınızı iletebilirsiniz. Form şu anda gerçek bir servise gönderim yapmaz.'],
+  ['Bir çilingire nasıl ulaşabilirim?', 'Seyhan Anahtar’a telefon veya WhatsApp üzerinden ulaşabilirsiniz. Formu gönderdiğinizde bilgileriniz WhatsApp mesajı olarak hazırlanır; mesajı kontrol edip siz gönderirsiniz.'],
   ['Araç anahtarı çoğaltma hizmeti var mı?', 'Araç marka ve modeline, anahtar türüne ve mevcut anahtar durumuna göre hizmet kapsamı değişebilir. Aracınızla ilgili bilgileri paylaşarak uygun seçeneği öğrenebilirsiniz.'],
   ['Araç anahtarımı kaybettiysem ne yapmalıyım?', 'Aracın marka-model ve yıl bilgisini, anahtarın tamamen kayıp olup olmadığını belirtin. Bu bilgiler uygun işlem ve olası ücret hakkında ön değerlendirmeye yardımcı olur.'],
   ['Kapı kilidi veya barel değişimi yapılabilir mi?', 'Evet, kilit ve barel değişimi hizmetleri sunulmaktadır. Mevcut kilit ve kapı tipi değerlendirilerek uygun seçenek paylaşılır.'],
   ['Hizmet ücreti nasıl belirlenir?', 'Ücret; hizmet türü, kilit veya anahtar sistemi ve işlem koşullarına göre değişebilir. İşlem öncesinde kapsam ve ücret bilgisini teyit etmenizi öneririz.'],
-  ['Hangi bölgelerde hizmet veriliyor?', 'Hizmet bölgeleri henüz işletme tarafından yapılandırılmadı. Güncel bölge bilgisi için iletişim sayfasından bilgi isteyin.'],
+  ['Hangi bölgelerde hizmet veriliyor?', 'İşletme adresi Seyhan/Adana’dadır. Yerinde hizmetin bulunduğunuz bölge için uygunluğunu telefon veya WhatsApp üzerinden teyit edin.'],
   ['Gece acil çilingir hizmeti var mı?', 'Çalışma saatleri ve gece hizmeti bilgileri henüz doğrulanmadı. Ulaşılabilirlik durumunu doğrudan teyit edin.'],
 ];
 
@@ -138,7 +146,9 @@ function ContactForm() {
   const [form, setForm] = useState({ name: '', phone: '', service: '', message: '' });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [success, setSuccess] = useState(false);
-  const update = (key: keyof typeof form, value: string) => { setForm(current => ({ ...current, [key]: value })); setErrors(current => ({ ...current, [key]: '' })); setSuccess(false); };
+  const [whatsappDraft, setWhatsappDraft] = useState<string | null>(null);
+  const [formError, setFormError] = useState('');
+  const update = (key: keyof typeof form, value: string) => { setForm(current => ({ ...current, [key]: value })); setErrors(current => ({ ...current, [key]: '' })); setSuccess(false); setWhatsappDraft(null); setFormError(''); };
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const next: Record<string, string> = {};
@@ -147,7 +157,25 @@ function ContactForm() {
     if (!form.service) next.service = 'Lütfen bir hizmet başlığı seçin.';
     if (form.message.trim().length < 10) next.message = 'Mesajınızı en az 10 karakterle açıklayın.';
     setErrors(next);
-    if (Object.keys(next).length === 0) setSuccess(true);
+    setFormError('');
+    if (Object.keys(next).length > 0) return;
+    const message = [
+      `Merhaba ${businessConfig.name},`,
+      'Web sitenizdeki iletişim formunu doldurdum.',
+      '',
+      `Ad soyad: ${form.name.trim()}`,
+      `Telefon: ${form.phone.trim()}`,
+      `Hizmet konusu: ${form.service}`,
+      `Mesaj: ${form.message.trim()}`,
+    ].join('\n');
+    const target = contactTarget(businessConfig.whatsapp, 'whatsapp', message);
+    if (!target) {
+      setFormError('WhatsApp bağlantısı şu anda kullanılamıyor. Lütfen telefonla iletişim kurun.');
+      return;
+    }
+    setWhatsappDraft(target);
+    window.open(target, '_blank', 'noopener,noreferrer');
+    setSuccess(true);
   }
   return <form className="contact-form" onSubmit={submit} noValidate>
     <div className="form-heading"><div><SectionLabel>HİZMET TALEBİ</SectionLabel><h2>İhtiyacınızı paylaşın</h2></div><span className="form-note">* Zorunlu alanlar</span></div>
@@ -157,8 +185,9 @@ function ContactForm() {
       <label className="form-full">Hangi konuda destek arıyorsunuz? <span>*</span><select data-testid="select-service" value={form.service} onChange={e => update('service', e.target.value)} aria-invalid={!!errors.service} aria-describedby={errors.service ? 'error-service' : undefined}><option value="">Bir hizmet seçin</option><option>Konut veya iş yeri kapısı</option><option>Kilit veya barel değişimi</option><option>Araç anahtarı</option><option>Kumanda veya immobilizer</option><option>Diğer</option></select>{errors.service && <small id="error-service" className="field-error">{errors.service}</small>}</label>
       <label className="form-full">Mesajınız <span>*</span><textarea data-testid="input-message" value={form.message} onChange={e => update('message', e.target.value)} rows={4} aria-invalid={!!errors.message} aria-describedby={errors.message ? 'error-message' : undefined} placeholder="Durumu ve varsa önemli ayrıntıları kısaca yazın." />{errors.message && <small id="error-message" className="field-error">{errors.message}</small>}</label>
     </div>
-    <div className="form-submit-row"><button className="button-primary form-submit" type="submit" data-testid="button-submit-contact">Bilgileri gözden geçir <ArrowRight size={16} /></button><p>Bu form örnek bir arayüzdür; mesajınız bir işletmeye gönderilmez.</p></div>
-    {success && <div className="form-success" role="status" aria-live="polite"><span><Check size={18} /></span><div><strong>Bilgileriniz kontrol edildi.</strong><p>Mesajınız gönderilmedi. Bu sitede henüz gerçek bir form gönderim servisi bulunmuyor. İletişime geçmek için yapılandırılmış telefon veya WhatsApp seçeneğini kullanın.</p><Link href="/contact" className="text-link">İletişim seçeneklerini görüntüle <ArrowRight size={15} /></Link></div></div>}
+    <div className="form-submit-row"><button className="button-primary form-submit" type="submit" data-testid="button-submit-contact">WhatsApp mesajını hazırla <MessageCircle size={16} /></button><p>Formdaki bilgiler WhatsApp mesajına aktarılır. Mesajı kontrol edip WhatsApp'ta siz gönderirsiniz; site bilgilerinizi kaydetmez.</p></div>
+    {formError && <p className="field-error" role="alert">{formError}</p>}
+    {success && whatsappDraft && <div className="form-success" role="status" aria-live="polite"><span><Check size={18} /></span><div><strong>WhatsApp mesajınız hazır.</strong><p>WhatsApp’ta bilgileri kontrol edip “Gönder”e basın.</p><a href={whatsappDraft} target="_blank" rel="noopener noreferrer" className="text-link">WhatsApp açılmadıysa mesajı buradan açın <ArrowRight size={15} /></a></div></div>}
   </form>;
 }
 
@@ -175,10 +204,15 @@ function HomePage() {
     <section className="section section-services"><div className="container-wide"><div className="section-head"><div><SectionLabel>HİZMETLERİMİZ</SectionLabel><h2 className="display-font">Ne konuda desteğe<br /><em>ihtiyacınız var?</em></h2></div><p>Kilit, kapı veya araç anahtarı. İlgili hizmet sayfasından kapsamı inceleyin ve nasıl iletişime geçeceğinizi öğrenin.</p></div><ServiceCards limit={4} /><div className="section-end"><Link href="/services" className="text-link">Tüm hizmetleri inceleyin <ArrowRight size={16} /></Link></div></div></section>
     <section className="split-feature automotive-feature"><div className="container-wide split-layout"><div className="feature-image-frame"><ImageWithFallback src="/car-keys.jpg" alt="Araç iç mekânında farklı tiplerde modern araç anahtarları" className="feature-image" /><span className="image-stamp">OTO ANAHTAR<br />HİZMETLERİ</span></div><div className="feature-copy"><SectionLabel>OTOMOTİV</SectionLabel><h2 className="display-font">Araç anahtarı ve kumanda <em>çözümleri</em></h2><p>Anahtar çoğaltma, kayıp anahtar, kumanda arızası ve immobilizer sistemleri için aracınıza uygun hizmet bilgisini alın.</p><ul className="check-list"><li><Check size={16} /> Anahtar çoğaltma ve kayıp anahtar</li><li><Check size={16} /> Kumanda ve akıllı anahtar hizmetleri</li><li><Check size={16} /> İmmobilizer hakkında ön değerlendirme</li></ul><Link href="/automotive-locksmith" className="button-primary">Oto çilingir hizmetleri <ArrowRight size={16} /></Link></div></div></section>
     <section className="split-feature residential-feature"><div className="container-wide split-layout split-reverse"><div className="feature-copy"><SectionLabel>KONUT · TİCARİ</SectionLabel><h2 className="display-font">Kapı ve kilit sorunlarında <em>uygun seçenek</em></h2><p>Apartman, konut ve iş yeri kapılarında açma, mekanizma onarımı ve kilit değişimi seçeneklerini öğrenin.</p><ul className="check-list"><li><Check size={16} /> Kapı açma ve kilit mekanizması</li><li><Check size={16} /> Çelik kapı kilit hizmetleri</li><li><Check size={16} /> Barel değişimi ve yeni kilit montajı</li></ul><Link href="/locksmith" className="button-primary">Çilingir hizmetlerini inceleyin <ArrowRight size={16} /></Link></div><div className="feature-image-frame"><ImageWithFallback src="/lock-cylinder.jpg" alt="Kapı kilidi barelini kontrol eden çilingir ustasının elleri" className="feature-image" /><span className="image-stamp">KİLİT SİSTEMLERİ<br />KONUT · İŞ YERİ</span></div></div></section>
+    <section className="history-section"><div className="container-wide history-grid"><div className="history-heading"><SectionLabel>TARİHÇE</SectionLabel><h2 className="display-font">Seyhan Anahtar <em>hakkında</em></h2></div><div className="history-copy"><p>{businessConfig.history}</p><p className="history-tagline">{businessConfig.name} – {businessConfig.historyTagline}</p><Link href="/about" className="text-link" data-testid="link-history">Tarihçemizi okuyun <ArrowRight size={16} /></Link></div></div></section>
     <section className="process-section"><div className="container-wide"><div className="section-head process-head"><div><SectionLabel>NASIL İLERLER?</SectionLabel><h2 className="display-font">Önce netlik,<br /><em>sonra hizmet.</em></h2></div><p>İlk görüşmede paylaşacağınız birkaç ayrıntı doğru hizmeti ve beklentileri netleştirmeye yardımcı olur.</p></div><div className="process-grid"><article><span className="process-no">01</span><h3>İhtiyacınızı anlatın</h3><p>Kapı veya araç bilgisiyle sorunun ne zaman başladığını paylaşın.</p></article><article><span className="process-no">02</span><h3>Seçenekleri konuşun</h3><p>Duruma göre hizmet kapsamı ve mümkünse tahmini ücret bilgisi alın.</p></article><article><span className="process-no">03</span><h3>Bilgiyi teyit edin</h3><p>İşleme başlamadan önce ücret, uygunluk ve varsa süre bilgisini teyit edin.</p></article></div></div></section>
     <section className="section faq-section"><div className="container-wide faq-layout"><div className="faq-intro"><SectionLabel>SIK SORULANLAR</SectionLabel><h2 className="display-font">Aklınızdaki<br /><em>sorular.</em></h2><p>Hizmet kapsamı koşullara göre değişebilir. Size özel bilgi için iletişim kurun.</p><Link href="/contact" className="text-link">Soru sorun <ArrowRight size={16} /></Link></div><FAQ /></div></section>
     <div className="container-wide"><CTA /></div>
   </main>;
+}
+
+function AboutPage() {
+  return <main><PageHero type="about" current="Hakkımızda" /><section className="history-page"><div className="container-wide"><div className="history-page-copy"><SectionLabel>SEYHAN ANAHTAR</SectionLabel><h2 className="display-font">Tarihçemiz ve <em>hizmet anlayışımız</em></h2><p>{businessConfig.history}</p><p className="history-tagline">{businessConfig.name} – {businessConfig.historyTagline}</p><Link href="/contact" className="button-primary" data-testid="link-about-contact"><Phone size={16} /> İletişim seçenekleri</Link></div></div></section></main>;
 }
 
 function PageHero({ type, current }: { type: PageKey; current: string }) {
@@ -217,21 +251,24 @@ function DetailPage({ type }: { type: 'automotive' | 'locksmith' | 'replacement'
 function ContactPage() {
   const phone = businessConfig.phone.trim();
   const wa = businessConfig.whatsapp.trim();
-  return <main><PageHero type="contact" current="İletişim" /><section className="contact-page"><div className="container-wide contact-layout"><aside className="contact-aside"><SectionLabel>ULAŞMA SEÇENEKLERİ</SectionLabel><h2 className="display-font">Doğru kanalı<br /><em>seçin.</em></h2><p>Gerçek iletişim bilgileri eklendiğinde telefon ve WhatsApp bağlantıları burada etkinleşir.</p><div className="contact-info-list">
+  return <main><PageHero type="contact" current="İletişim" /><section className="contact-page"><div className="container-wide contact-layout"><aside className="contact-aside"><SectionLabel>ULAŞMA SEÇENEKLERİ</SectionLabel><h2 className="display-font">Doğru kanalı<br /><em>seçin.</em></h2><p>Seyhan Anahtar’a telefon veya WhatsApp üzerinden doğrudan ulaşabilirsiniz. Yerinde hizmet uygunluğunu iletişim sırasında teyit edin.</p><div className="contact-info-list">
     <div className="contact-info-item"><span><Phone size={18} /></span><div><b>Telefon</b>{phone ? <a href={contactTarget(phone, 'phone')}>{phone}</a> : <small>İşletme telefonu henüz eklenmedi.</small>}</div></div>
     <div className="contact-info-item"><span><MessageCircle size={18} /></span><div><b>WhatsApp</b>{wa ? <a href={contactTarget(wa, 'whatsapp')} target="_blank" rel="noopener noreferrer">WhatsApp ile iletişim</a> : <small>WhatsApp bilgisi henüz eklenmedi.</small>}</div></div>
-    <div className="contact-info-item"><span><MapPin size={18} /></span><div><b>Adres ve hizmet bölgesi</b><small>{businessConfig.address || (businessConfig.serviceAreas.length ? businessConfig.serviceAreas.join(', ') : 'İşletme konumu henüz eklenmedi.')}</small>{businessConfig.directionsUrl && <a href={businessConfig.directionsUrl} target="_blank" rel="noopener noreferrer">Yol tarifi al</a>}</div></div>
+    <div className="contact-info-item"><span><MapPin size={18} /></span><div><b>Adres</b><small>{businessConfig.address || (businessConfig.serviceAreas.length ? businessConfig.serviceAreas.join(', ') : 'İşletme konumu henüz eklenmedi.')}</small>{businessConfig.directionsUrl && <a href={businessConfig.directionsUrl} target="_blank" rel="noopener noreferrer">Yol tarifi al</a>}</div></div>
     <div className="contact-info-item"><span><Clock3 size={18} /></span><div><b>Çalışma saatleri</b><small>{businessConfig.openingHours || 'Çalışma saatleri henüz eklenmedi.'}</small></div></div>
-  </div><div className="setup-callout"><BadgeInfo size={18} /><p>İletişim kanalları, işletme bilgileri doğrulanıp yapılandırıldıktan sonra kullanılabilir.</p></div></aside><ContactForm /></div></section></main>;
+  </div><div className="setup-callout"><BadgeInfo size={18} /><p>Telefon ve WhatsApp bağlantıları aktiftir. Formu gönderdiğinizde doldurduğunuz bilgiler WhatsApp mesajı olarak açılır; mesajı kontrol edip siz gönderirsiniz. Çalışma saatlerini ve yerinde hizmet uygunluğunu WhatsApp’tan teyit edin.</p></div></aside><ContactForm /></div></section></main>;
 }
 
 function PrivacyPage() {
-  return <main><PageHero type="privacy" current="Gizlilik bildirimi" /><section className="privacy-content"><div className="container-wide privacy-wrap"><p className="privacy-lead">Bu metin, web sitesinin mevcut işleyişine ilişkin genel bilgilendirmedir. Yayına almadan önce veri sorumlusu bilgileri ve gerçek veri işleme süreçleri işletme tarafından gözden geçirilmelidir.</p><article><h2>1. Veri sorumlusu</h2><p>İşletme adı ve iletişim bilgileri henüz site yapılandırmasına eklenmedi. Gerçek işletme bilgileri sağlandığında bu bölüm güncellenmelidir.</p></article><article><h2>2. İletişim formu</h2><p>Bu sitedeki form yalnızca tarayıcıda çalışan örnek bir arayüzdür. Form gönderimi bir sunucuya, e-posta adresine veya işletmeye iletilmez; bu uygulama form verilerini kaydetmez.</p></article><article><h2>3. Telefon ve WhatsApp bağlantıları</h2><p>Bu bağlantılar, ancak işletme yapılandırmasına gerçek telefon ve WhatsApp bilgileri girildiğinde etkinleşir. Şu an yapılandırılmamış iletişim bilgileri için sahte bağlantı oluşturulmaz.</p></article><article><h2>4. Çerezler ve üçüncü taraf hizmetler</h2><p>Bu uygulama tarafından özel bir analiz veya reklam çerezi yapılandırılmamıştır. Kullanılan barındırma altyapısı veya tarayıcı hizmetlerinin kendi kayıt ve çerezleri olabilir; bunlar ilgili sağlayıcıların politikalarına tabidir.</p></article><article><h2>5. Güncelleme ve başvuru</h2><p>Gerçek kişisel veri işleme faaliyeti başladığında, amaç, hukuki sebep, saklama süresi, aktarım ve ilgili kişi başvuru kanalları somut işleyişe göre açıklanmalıdır. Bu sayfa hukuki danışmanlık yerine geçmez.</p></article><div className="privacy-contact"><ClipboardCheck /><div><strong>Bilgilendirme notu</strong><p>Bu metin genel bir web sitesi bilgilendirme taslağıdır; yürürlükteki mevzuat ve işletmenin fiili süreçleriyle uyumlu hâle getirilmelidir.</p></div></div><Link href="/contact" className="text-link">İletişim sayfasına dönün <ArrowRight size={16} /></Link></div></section></main>;
+  if (businessConfig.name.trim() && businessConfig.phone.trim() && businessConfig.address.trim()) {
+    return <main><PageHero type="privacy" current="Gizlilik bildirimi" /><section className="privacy-content"><div className="container-wide privacy-wrap"><p className="privacy-lead">Bu bilgilendirme, sitenin mevcut işleyişini açıklar. Yayına almadan önce gerçek veri işleme süreçleri ve veri sorumlusu bilgileri işletme tarafından gözden geçirilmelidir.</p><article><h2>1. Veri sorumlusu</h2><p>{businessConfig.name}, {businessConfig.address} adresinde hizmet sunar. Telefon: {businessConfig.phone}.</p></article><article><h2>2. İletişim formu</h2><p>Formda paylaşılan ad, telefon, hizmet konusu ve mesaj WhatsApp bağlantısı açıldığında önceden doldurulmuş mesaj olarak WhatsApp’a aktarılır. Bu site form verilerini saklamaz. Mesajı kullanıcı WhatsApp’ta kontrol edip kendisi gönderir.</p></article><article><h2>3. Telefon ve WhatsApp bağlantıları</h2><p>Telefon bağlantısı arama uygulamasını, WhatsApp bağlantısı ise mesajlaşma uygulamasını açar. İletişim başlatma kullanıcının seçimine bağlıdır.</p></article><article><h2>4. Çerezler ve bilgilendirme</h2><p>Bu uygulamada özel analiz veya reklam çerezi yapılandırılmamıştır. Bu sayfa hukuki danışmanlık yerine geçmez; işletmenin gerçek veri işleme süreçlerine göre gözden geçirilmelidir.</p></article><Link href="/contact" className="text-link">İletişim seçeneklerine dönün <ArrowRight size={16} /></Link></div></section></main>;
+  }
+  return <main><PageHero type="privacy" current="Gizlilik bildirimi" /><section className="privacy-content"><div className="container-wide privacy-wrap"><p className="privacy-lead">Bu metin, web sitesinin mevcut işleyişine ilişkin genel bilgilendirmedir. Yayına almadan önce veri sorumlusu bilgileri ve gerçek veri işleme süreçleri işletme tarafından gözden geçirilmelidir.</p><article><h2>1. Veri sorumlusu</h2><p>İşletme adı ve iletişim bilgileri henüz site yapılandırmasına eklenmedi. Gerçek işletme bilgileri sağlandığında bu bölüm güncellenmelidir.</p></article><article><h2>2. İletişim formu</h2><p>Formdaki bilgiler, yapılandırılmış bir WhatsApp numarası varsa WhatsApp’ta mesaj taslağı olarak açılır. Bu uygulama bilgileri sunucuda saklamaz; mesajı kullanıcı WhatsApp üzerinden kendisi gönderir.</p></article><article><h2>3. Telefon ve WhatsApp bağlantıları</h2><p>Bu bağlantılar, ancak işletme yapılandırmasına gerçek telefon ve WhatsApp bilgileri girildiğinde etkinleşir. Şu an yapılandırılmamış iletişim bilgileri için sahte bağlantı oluşturulmaz.</p></article><article><h2>4. Çerezler ve üçüncü taraf hizmetler</h2><p>Bu uygulama tarafından özel bir analiz veya reklam çerezi yapılandırılmamıştır. Kullanılan barındırma altyapısı veya tarayıcı hizmetlerinin kendi kayıt ve çerezleri olabilir; bunlar ilgili sağlayıcıların politikalarına tabidir.</p></article><article><h2>5. Güncelleme ve başvuru</h2><p>Gerçek kişisel veri işleme faaliyeti başladığında, amaç, hukuki sebep, saklama süresi, aktarım ve ilgili kişi başvuru kanalları somut işleyişe göre açıklanmalıdır. Bu sayfa hukuki danışmanlık yerine geçmez.</p></article><div className="privacy-contact"><ClipboardCheck /><div><strong>Bilgilendirme notu</strong><p>Bu metin genel bir web sitesi bilgilendirme taslağıdır; yürürlükteki mevzuat ve işletmenin fiili süreçleriyle uyumlu hâle getirilmelidir.</p></div></div><Link href="/contact" className="text-link">İletişim sayfasına dönün <ArrowRight size={16} /></Link></div></section></main>;
 }
 
 function SEO() {
   const [path] = useLocation();
-  const routeKey: PageKey = path === '/services' ? 'services' : path === '/automotive-locksmith' ? 'automotive' : path === '/locksmith' ? 'locksmith' : path === '/lock-replacement' ? 'replacement' : path === '/contact' ? 'contact' : path === '/privacy-policy' ? 'privacy' : 'home';
+  const routeKey: PageKey = path === '/services' ? 'services' : path === '/automotive-locksmith' ? 'automotive' : path === '/locksmith' ? 'locksmith' : path === '/lock-replacement' ? 'replacement' : path === '/about' ? 'about' : path === '/contact' ? 'contact' : path === '/privacy-policy' ? 'privacy' : 'home';
   const meta = pageMeta[routeKey];
   useEffect(() => {
     document.title = meta.title;
@@ -275,6 +312,7 @@ function RouteContent() {
     <Route path="/automotive-locksmith"><DetailPage type="automotive" /></Route>
     <Route path="/locksmith"><DetailPage type="locksmith" /></Route>
     <Route path="/lock-replacement"><DetailPage type="replacement" /></Route>
+    <Route path="/about" component={AboutPage} />
     <Route path="/contact" component={ContactPage} /><Route path="/privacy-policy" component={PrivacyPage} />
     <Route component={NotFound} />
   </Switch><Footer /><MobileContact /></div></>;

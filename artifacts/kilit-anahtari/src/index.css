@@ -204,6 +204,18 @@
 .section-head { display: flex; justify-content: space-between; align-items: end; gap: 45px; margin-bottom: 39px; }
 .section-head h2, .process-head h2, .faq-intro h2, .feature-copy h2, .detail-intro h2, .detail-image-layout h2, .contact-aside h2 { margin: 0; color: #101828; font-size: clamp(32px, 3.6vw, 45px); line-height: 1.12; font-weight: 800; }
 .section-head > p { max-width: 390px; margin: 0 0 4px; color: #66748a; font-size: 14px; line-height: 1.75; }
+.history-section { padding-block: 78px; background: #f0f4f9; }
+.history-grid { display: grid; grid-template-columns: .75fr 1.25fr; gap: 70px; align-items: start; }
+.history-heading h2, .history-page-copy h2 { margin: 0; color: #101828; font-size: clamp(32px, 3.6vw, 45px); line-height: 1.12; font-weight: 800; }
+.history-heading h2 em, .history-page-copy h2 em { color: #2563eb; font-style: normal; }
+.history-copy p, .history-page-copy > p { margin: 0; color: #59677c; font-size: 15px; line-height: 1.85; }
+.history-tagline { margin-top: 18px !important; color: #18243a !important; font-weight: 700; }
+.history-copy .text-link { margin-top: 20px; }
+.history-page { padding-block: 70px 90px; }
+.history-page-copy { max-width: 900px; margin-inline: auto; }
+.history-page-copy .section-label { margin-bottom: 16px; }
+.history-page-copy h2 { margin-bottom: 24px; }
+.history-page-copy .button-primary { margin-top: 26px; }
 .service-grid { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid #dfe5ed; border-left: 1px solid #dfe5ed; }
 .service-card { min-height: 241px; padding: 22px 20px 19px; background: white; border-right: 1px solid #dfe5ed; border-bottom: 1px solid #dfe5ed; }
 .service-card-top { display: flex; align-items: center; justify-content: space-between; }
@@ -379,6 +391,11 @@
  .trust-items b { font-size: 11px; }
  .trust-items small { font-size: 9px; }
  .section { padding-block: 63px; }
+  .history-section { padding-block: 58px; }
+  .history-grid { grid-template-columns: 1fr; gap: 21px; }
+  .history-page { padding-block: 48px 65px; }
+  .history-page-copy h2 { font-size: 34px; }
+  .history-copy p, .history-page-copy > p { font-size: 13px; }
  .section-head { display: block; margin-bottom: 27px; }
  .section-head > p { margin-top: 16px; font-size: 13px; }
  .service-grid { grid-template-columns: 1fr 1fr; }
